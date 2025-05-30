@@ -213,81 +213,130 @@ class AdminCategoryViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         """Custom create method to handle image upload"""
-        # Log request data for debugging
-        print("Category create request data:", request.data)
-        print("Category create request FILES:", request.FILES)
+        try:
+            # Log request data for debugging
+            print("Category create request data:", request.data)
+            print("Category create request FILES:", request.FILES)
 
-        # Extract image from request data
-        image = request.FILES.get('image')
-        print("Category image found:", image)
+            # Extract image from request data
+            image = request.FILES.get('image')
+            print("Category image found:", image)
 
-        # Create the category
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        category = serializer.save()
-        print("Category created:", category.id, category.name)
+            # Create the category
+            serializer = self.get_serializer(data=request.data)
+            print("Serializer validation starting...")
 
-        # Save image directly to the category if image was uploaded
-        if image:
-            print("Saving image directly to category:", image)
-            try:
-                # Save image directly to the category
-                category.image = image
-                category.save()
-                print("Image saved directly to category:", category.id)
+            if not serializer.is_valid():
+                print("Serializer validation errors:", serializer.errors)
+                return Response(
+                    {'error': 'Validation failed', 'details': serializer.errors},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
-                # Verify the image was saved
-                print("Saved image path:", category.image.path if category.image else "No image path")
-            except Exception as e:
-                print("Error saving category image:", str(e))
-                import traceback
-                traceback.print_exc()
-        else:
-            print("No image found in category create request")
+            category = serializer.save()
+            print("Category created successfully:", category.id, category.name)
 
-        # Re-serialize to include the updated image URL
-        updated_serializer = self.get_serializer(category)
-        return Response(updated_serializer.data, status=status.HTTP_201_CREATED)
+            # Save image directly to the category if image was uploaded
+            if image:
+                print("Saving image directly to category:", image)
+                try:
+                    # Save image directly to the category
+                    category.image = image
+                    category.save()
+                    print("Image saved directly to category:", category.id)
+
+                    # Verify the image was saved
+                    print("Saved image path:", category.image.path if category.image else "No image path")
+                except Exception as e:
+                    print("Error saving category image:", str(e))
+                    import traceback
+                    traceback.print_exc()
+                    return Response(
+                        {'error': 'Image upload failed', 'details': str(e)},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                    )
+            else:
+                print("No image found in category create request")
+
+            # Re-serialize to include the updated image URL
+            updated_serializer = self.get_serializer(category)
+            return Response(updated_serializer.data, status=status.HTTP_201_CREATED)
+
+        except Exception as e:
+            print("Category create error:", str(e))
+            import traceback
+            traceback.print_exc()
+            return Response(
+                {'error': 'Category creation failed', 'details': str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
     def update(self, request, *args, **kwargs):
         """Custom update method to handle image upload"""
-        # Log request data for debugging
-        print("Category update request data:", request.data)
-        print("Category update request FILES:", request.FILES)
+        try:
+            # Log request data for debugging
+            print("Category update request data:", request.data)
+            print("Category update request FILES:", request.FILES)
+            print("Category update kwargs:", kwargs)
+            print("Category update args:", args)
 
-        # Extract image from request data
-        image = request.FILES.get('image')
-        print("Category update image found:", image)
+            # Extract image from request data
+            image = request.FILES.get('image')
+            print("Category update image found:", image)
 
-        # Update the category
-        partial = kwargs.pop('partial', False)
-        instance = self.get_object()
-        serializer = self.get_serializer(instance, data=request.data, partial=partial)
-        serializer.is_valid(raise_exception=True)
-        category = serializer.save()
-        print("Category updated:", category.id, category.name)
+            # Update the category
+            partial = kwargs.pop('partial', False)
+            instance = self.get_object()
+            print("Category instance found:", instance.id, instance.name)
 
-        # Update category image if image was uploaded
-        if image:
-            print("Updating category image with:", image)
-            try:
-                # Save image directly to the category
-                category.image = image
-                category.save()
-                print("Image saved directly to category:", category.id)
+            # Validate serializer
+            serializer = self.get_serializer(instance, data=request.data, partial=partial)
+            print("Serializer validation starting...")
 
-                # Verify the image was saved
-                print("Saved image path:", category.image.path if category.image else "No image path")
-            except Exception as e:
-                print("Error updating category image:", str(e))
-                import traceback
-                traceback.print_exc()
-        else:
-            print("No image found in category update request")
+            if not serializer.is_valid():
+                print("Serializer validation errors:", serializer.errors)
+                return Response(
+                    {'error': 'Validation failed', 'details': serializer.errors},
+                    status=status.HTTP_400_BAD_REQUEST
+                )
 
-        # Re-serialize to include the updated image URL
-        updated_serializer = self.get_serializer(category)
-        return Response(updated_serializer.data)
+            category = serializer.save()
+            print("Category updated successfully:", category.id, category.name)
+
+            # Update category image if image was uploaded
+            if image:
+                print("Updating category image with:", image)
+                try:
+                    # Save image directly to the category
+                    category.image = image
+                    category.save()
+                    print("Image saved directly to category:", category.id)
+
+                    # Verify the image was saved
+                    print("Saved image path:", category.image.path if category.image else "No image path")
+                except Exception as e:
+                    print("Error updating category image:", str(e))
+                    import traceback
+                    traceback.print_exc()
+                    return Response(
+                        {'error': 'Image upload failed', 'details': str(e)},
+                        status=status.HTTP_500_INTERNAL_SERVER_ERROR
+                    )
+            else:
+                print("No image found in category update request")
+
+            # Re-serialize to include the updated image URL
+            updated_serializer = self.get_serializer(category)
+            return Response(updated_serializer.data)
+
+        except Exception as e:
+            print("Category update error:", str(e))
+            import traceback
+            traceback.print_exc()
+            return Response(
+                {'error': 'Category update failed', 'details': str(e)},
+                status=status.HTTP_500_INTERNAL_SERVER_ERROR
+            )
 
 # Admin Order ViewSet
 class AdminOrderViewSet(viewsets.ModelViewSet):
