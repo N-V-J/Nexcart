@@ -31,6 +31,23 @@ services:
       - key: RENDER
         value: True
 
+  # React Frontend Web Service (Docker Image)
+  - type: web
+    name: nexcart-frontend
+    env: docker
+    dockerfilePath: ./nexcart-frontend-new/Dockerfile
+    buildCommand: |
+      cd nexcart-frontend-new &&
+      npm ci &&
+      npm run build
+    envVars:
+      - key: VITE_API_URL
+        value: https://nexcart-backend.onrender.com/api
+      - key: VITE_STRIPE_PUBLIC_KEY
+        value: your-stripe-public-key
+      - key: VITE_APP_NAME
+        value: NexCart
+
 databases:
   - name: nexcart-db
     databaseName: nexcart_db
