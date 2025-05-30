@@ -59,7 +59,8 @@ const AdminProducts = () => {
       console.log('Fetching page:', page, 'with pageSize:', pageSize);
 
       // Build URL with pagination parameters
-      const url = new URL('http://localhost:8000/api/admin/products/');
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const url = new URL(`${apiUrl}/admin/products/`);
       url.searchParams.append('page', page);
       url.searchParams.append('page_size', pageSize);
 
@@ -171,7 +172,8 @@ const AdminProducts = () => {
 
         // Fetch categories
         console.log('Fetching categories...');
-        const categoriesResponse = await fetch('http://localhost:8000/api/categories/', {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const categoriesResponse = await fetch(`${apiUrl}/categories/`, {
           headers: {
             'Authorization': `Bearer ${token}`,
             'Accept': 'application/json'
@@ -239,7 +241,8 @@ const AdminProducts = () => {
       } else if (product.primary_image) {
         imageUrl = product.primary_image;
       } else if (product.image && typeof product.image === 'string') {
-        imageUrl = product.image.startsWith('http') ? product.image : `http://localhost:8000${product.image}`;
+        const baseUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000';
+        imageUrl = product.image.startsWith('http') ? product.image : `${baseUrl}${product.image}`;
       }
 
       console.log('Product image URL for edit:', imageUrl);
@@ -287,11 +290,12 @@ const AdminProducts = () => {
       console.log('Product data:', productData);
 
       // Use admin API endpoints
-      let url = 'http://localhost:8000/api/admin/products/';
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      let url = `${apiUrl}/admin/products/`;
       let method = 'POST';
 
       if (editingProduct) {
-        url = `http://localhost:8000/api/admin/products/${editingProduct.id}/`;
+        url = `${apiUrl}/admin/products/${editingProduct.id}/`;
         method = 'PUT';
       }
 
@@ -470,7 +474,8 @@ const AdminProducts = () => {
 
         // Force a complete refresh from the server with pagination
         const token = localStorage.getItem('access_token');
-        const url = new URL('http://localhost:8000/api/admin/products/');
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const url = new URL(`${apiUrl}/admin/products/`);
         url.searchParams.append('page', pagination.current);
         url.searchParams.append('page_size', pagination.pageSize);
 
@@ -677,7 +682,8 @@ const AdminProducts = () => {
             imageUrl = record.image_url;
           } else {
             // Otherwise, prepend the backend URL
-            imageUrl = `http://localhost:8000${record.image_url}`;
+            const baseUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000';
+            imageUrl = `${baseUrl}${record.image_url}`;
           }
         } else if (record.image) {
           // If we have image but not image_url, construct the URL
@@ -685,11 +691,13 @@ const AdminProducts = () => {
             if (record.image.startsWith('http')) {
               imageUrl = record.image;
             } else {
-              imageUrl = `http://localhost:8000${record.image}`;
+              const baseUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000';
+              imageUrl = `${baseUrl}${record.image}`;
             }
           } else {
             // If image is an object, try to get the URL
-            imageUrl = `http://localhost:8000/media/products/${record.image.name || 'unknown.jpg'}`;
+            const baseUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000';
+            imageUrl = `${baseUrl}/media/products/${record.image.name || 'unknown.jpg'}`;
           }
         } else if (record.primary_image) {
           // Support for primary_image field

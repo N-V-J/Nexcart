@@ -82,7 +82,8 @@ const AdminUsers = () => {
     try {
       const token = localStorage.getItem('access_token');
 
-      const response = await fetch(`http://localhost:8000/api/admin/users/${user.id}/orders/`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${apiUrl}/admin/users/${user.id}/orders/`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -193,7 +194,8 @@ const AdminUsers = () => {
     try {
       const token = localStorage.getItem('access_token');
 
-      const response = await fetch(`http://localhost:8000/api/admin/users/${userId}/`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${apiUrl}/admin/users/${userId}/`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

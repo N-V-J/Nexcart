@@ -132,7 +132,8 @@ const AdminPage = () => {
     try {
       const token = localStorage.getItem('access_token');
 
-      const response = await fetch('http://localhost:8000/api/admin/dashboard_stats/', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${apiUrl}/admin/dashboard_stats/`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -375,7 +376,7 @@ const AdminPage = () => {
               label: 'Categories',
             },
 
-        
+
             {
               key: 'logout',
               icon: <LogoutOutlined />,

@@ -48,7 +48,8 @@ const AdminOrders = () => {
         const token = localStorage.getItem('access_token');
 
         // First fetch orders
-        const response = await fetch('http://localhost:8000/api/admin/orders/', {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const response = await fetch(`${apiUrl}/admin/orders/`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -62,7 +63,7 @@ const AdminOrders = () => {
         const orders = data.results || [];
 
         // Then fetch users to get usernames
-        const usersResponse = await fetch('http://localhost:8000/api/admin/users/', {
+        const usersResponse = await fetch(`${apiUrl}/admin/users/`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -125,7 +126,8 @@ const AdminOrders = () => {
     try {
       const token = localStorage.getItem('access_token');
 
-      const response = await fetch(`http://localhost:8000/api/admin/orders/${selectedOrder.id}/update_status/`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${apiUrl}/admin/orders/${selectedOrder.id}/update_status/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

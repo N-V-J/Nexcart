@@ -40,8 +40,9 @@ const AdminCategories = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem('access_token');
-        
-        const response = await fetch('http://localhost:8000/api/categories/', {
+
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const response = await fetch(`${apiUrl}/categories/`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -68,7 +69,7 @@ const AdminCategories = () => {
   const showModal = (category = null) => {
     setEditingCategory(category);
     setModalTitle(category ? 'Edit Category' : 'Add Category');
-    
+
     if (category) {
       form.setFieldsValue({
         name: category.name,
@@ -90,7 +91,7 @@ const AdminCategories = () => {
       form.resetFields();
       setFileList([]);
     }
-    
+
     setModalVisible(true);
   };
 
@@ -99,19 +100,19 @@ const AdminCategories = () => {
     try {
       setUploading(true);
       const token = localStorage.getItem('access_token');
-      
+
       const formData = new FormData();
       formData.append('name', values.name);
       formData.append('description', values.description || '');
       formData.append('is_active', values.is_active);
-      
+
       if (fileList.length > 0 && fileList[0].originFileObj) {
         formData.append('image', fileList[0].originFileObj);
       }
 
       let url = 'http://localhost:8000/api/admin/categories/';
       let method = 'POST';
-      
+
       if (editingCategory) {
         url = `http://localhost:8000/api/admin/categories/${editingCategory.id}/`;
         method = 'PUT';
@@ -131,14 +132,14 @@ const AdminCategories = () => {
 
       message.success(`Category ${editingCategory ? 'updated' : 'added'} successfully`);
       setModalVisible(false);
-      
+
       // Refresh category list
       const categoriesResponse = await fetch('http://localhost:8000/api/categories/', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
       });
-      
+
       if (categoriesResponse.ok) {
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData.results || []);
@@ -155,7 +156,7 @@ const AdminCategories = () => {
   const handleDelete = async (id) => {
     try {
       const token = localStorage.getItem('access_token');
-      
+
       const response = await fetch(`http://localhost:8000/api/admin/categories/${id}/`, {
         method: 'DELETE',
         headers: {
@@ -168,7 +169,7 @@ const AdminCategories = () => {
       }
 
       message.success('Category deleted successfully');
-      
+
       // Update category list
       setCategories(categories.filter(category => category.id !== id));
     } catch (error) {
@@ -202,10 +203,10 @@ const AdminCategories = () => {
       dataIndex: 'image',
       key: 'image',
       render: (text, record) => (
-        <img 
-          src={getValidImageUrl(text, record.name, 50, 50)} 
-          alt={record.name} 
-          style={{ width: 50, height: 50, objectFit: 'cover' }} 
+        <img
+          src={getValidImageUrl(text, record.name, 50, 50)}
+          alt={record.name}
+          style={{ width: 50, height: 50, objectFit: 'cover' }}
         />
       ),
     },
@@ -243,9 +244,9 @@ const AdminCategories = () => {
       key: 'actions',
       render: (_, record) => (
         <Space size="small">
-          <Button 
-            type="primary" 
-            icon={<EditOutlined />} 
+          <Button
+            type="primary"
+            icon={<EditOutlined />}
             onClick={() => showModal(record)}
             size="small"
           />
@@ -255,10 +256,10 @@ const AdminCategories = () => {
             okText="Yes"
             cancelText="No"
           >
-            <Button 
-              type="primary" 
-              danger 
-              icon={<DeleteOutlined />} 
+            <Button
+              type="primary"
+              danger
+              icon={<DeleteOutlined />}
               size="small"
               disabled={record.product_count > 0} // Prevent deleting categories with products
             />
@@ -280,18 +281,18 @@ const AdminCategories = () => {
     <div>
       <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 16 }}>
         <Title level={2}>Categories</Title>
-        <Button 
-          type="primary" 
-          icon={<PlusOutlined />} 
+        <Button
+          type="primary"
+          icon={<PlusOutlined />}
           onClick={() => showModal()}
         >
           Add Category
         </Button>
       </div>
 
-      <Table 
-        columns={columns} 
-        dataSource={categories} 
+      <Table
+        columns={columns}
+        dataSource={categories}
         rowKey="id"
         pagination={{ pageSize: 10 }}
       />

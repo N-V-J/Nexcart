@@ -49,7 +49,8 @@ const AdminCategories = () => {
           throw new Error('No authentication token found');
         }
 
-        const response = await fetch('http://localhost:8000/api/categories/', {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const response = await fetch(`${apiUrl}/categories/`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -84,7 +85,7 @@ const AdminCategories = () => {
   const showEditModal = (category) => {
     setModalTitle('Edit Category');
     setEditingCategory(category);
-    
+
     // Set form values
     form.setFieldsValue({
       name: category.name,
@@ -137,11 +138,12 @@ const AdminCategories = () => {
         formData.append('image', fileList[0].originFileObj);
       }
 
-      let url = 'http://localhost:8000/api/categories/';
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      let url = `${apiUrl}/categories/`;
       let method = 'POST';
 
       if (editingCategory) {
-        url = `http://localhost:8000/api/categories/${editingCategory.id}/`;
+        url = `${apiUrl}/categories/${editingCategory.id}/`;
         method = 'PUT';
       }
 
@@ -159,14 +161,14 @@ const AdminCategories = () => {
 
       message.success(`Category ${editingCategory ? 'updated' : 'added'} successfully`);
       setModalVisible(false);
-      
+
       // Refresh category list
-      const categoriesResponse = await fetch('http://localhost:8000/api/categories/', {
+      const categoriesResponse = await fetch(`${apiUrl}/categories/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
-      
+
       if (categoriesResponse.ok) {
         const categoriesData = await categoriesResponse.json();
         setCategories(categoriesData.results);
@@ -199,7 +201,7 @@ const AdminCategories = () => {
       }
 
       message.success('Category deleted successfully');
-      
+
       // Remove category from state
       setCategories(categories.filter(category => category.id !== id));
     } catch (error) {
@@ -214,7 +216,7 @@ const AdminCategories = () => {
   };
 
   // Filter categories by search text
-  const filteredCategories = categories.filter(category => 
+  const filteredCategories = categories.filter(category =>
     category.name.toLowerCase().includes(searchText.toLowerCase()) ||
     (category.description && category.description.toLowerCase().includes(searchText.toLowerCase()))
   );
@@ -274,9 +276,9 @@ const AdminCategories = () => {
       key: 'actions',
       render: (_, record) => (
         <Space size="small">
-          <Button 
-            type="primary" 
-            icon={<EditOutlined />} 
+          <Button
+            type="primary"
+            icon={<EditOutlined />}
             size="small"
             onClick={() => showEditModal(record)}
           />
@@ -286,10 +288,10 @@ const AdminCategories = () => {
             okText="Yes"
             cancelText="No"
           >
-            <Button 
-              type="primary" 
-              danger 
-              icon={<DeleteOutlined />} 
+            <Button
+              type="primary"
+              danger
+              icon={<DeleteOutlined />}
               size="small"
             />
           </Popconfirm>
@@ -390,8 +392,8 @@ const AdminCategories = () => {
           >
             <Select allowClear placeholder="Select parent category">
               {categories.map(category => (
-                <Option 
-                  key={category.id} 
+                <Option
+                  key={category.id}
                   value={category.id}
                   disabled={editingCategory && editingCategory.id === category.id}
                 >

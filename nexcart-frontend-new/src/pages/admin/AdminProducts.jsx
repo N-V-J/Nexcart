@@ -100,7 +100,7 @@ const AdminProducts = () => {
   const showEditModal = (product) => {
     setModalTitle('Edit Product');
     setEditingProduct(product);
-    
+
     // Set form values
     form.setFieldsValue({
       name: product.name,
@@ -159,11 +159,12 @@ const AdminProducts = () => {
         formData.append('image', fileList[0].originFileObj);
       }
 
-      let url = 'http://localhost:8000/api/products/';
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      let url = `${apiUrl}/products/`;
       let method = 'POST';
 
       if (editingProduct) {
-        url = `http://localhost:8000/api/products/${editingProduct.id}/`;
+        url = `${apiUrl}/products/${editingProduct.id}/`;
         method = 'PUT';
       }
 
@@ -181,14 +182,14 @@ const AdminProducts = () => {
 
       message.success(`Product ${editingProduct ? 'updated' : 'added'} successfully`);
       setModalVisible(false);
-      
+
       // Refresh product list
-      const productsResponse = await fetch('http://localhost:8000/api/products/', {
+      const productsResponse = await fetch(`${apiUrl}/products/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
       });
-      
+
       if (productsResponse.ok) {
         const productsData = await productsResponse.json();
         setProducts(productsData.results);
@@ -221,7 +222,7 @@ const AdminProducts = () => {
       }
 
       message.success('Product deleted successfully');
-      
+
       // Remove product from state
       setProducts(products.filter(product => product.id !== id));
     } catch (error) {
@@ -236,7 +237,7 @@ const AdminProducts = () => {
   };
 
   // Filter products by search text
-  const filteredProducts = products.filter(product => 
+  const filteredProducts = products.filter(product =>
     product.name.toLowerCase().includes(searchText.toLowerCase()) ||
     product.description.toLowerCase().includes(searchText.toLowerCase())
   );
@@ -316,9 +317,9 @@ const AdminProducts = () => {
       key: 'actions',
       render: (_, record) => (
         <Space size="small">
-          <Button 
-            type="primary" 
-            icon={<EditOutlined />} 
+          <Button
+            type="primary"
+            icon={<EditOutlined />}
             size="small"
             onClick={() => showEditModal(record)}
           />
@@ -328,10 +329,10 @@ const AdminProducts = () => {
             okText="Yes"
             cancelText="No"
           >
-            <Button 
-              type="primary" 
-              danger 
-              icon={<DeleteOutlined />} 
+            <Button
+              type="primary"
+              danger
+              icon={<DeleteOutlined />}
               size="small"
             />
           </Popconfirm>
