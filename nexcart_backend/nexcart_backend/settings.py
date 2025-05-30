@@ -243,7 +243,7 @@ if os.environ.get('RENDER'):
     X_FRAME_OPTIONS = 'DENY'
 
     # Static files settings for Render with WhiteNoise
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
 
     # Ensure static files are served correctly
     STATIC_URL = '/static/'

@@ -18,10 +18,24 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from django.http import JsonResponse
 from rest_framework_simplejwt.views import TokenRefreshView
 from users.views_auth import CustomTokenObtainPairView
 
+def api_root(request):
+    """Simple API root view"""
+    return JsonResponse({
+        'message': 'NexCart Backend API',
+        'version': '1.0.0',
+        'endpoints': {
+            'admin': '/admin/',
+            'api': '/api/',
+            'auth': '/api/token/',
+        }
+    })
+
 urlpatterns = [
+    path('', api_root, name='api_root'),  # Root URL
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),
