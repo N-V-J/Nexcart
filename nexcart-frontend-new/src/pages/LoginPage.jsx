@@ -91,7 +91,7 @@ const LoginPage = () => {
 
       // Explicitly check admin status with the backend
       try {
-        const adminCheckResponse = await fetch('http://localhost:8000/api/users/check_admin/', {
+        const adminCheckResponse = await fetch(`${apiUrl}/users/check_admin/`, {
           headers: {
             'Authorization': `Bearer ${data.access}`,
           },

@@ -88,9 +88,10 @@ const CheckoutPage = () => {
 
       // Sync local cart with backend cart
       // This ensures that the backend cart has the same items as the frontend cart
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
       for (const item of cartItems) {
         try {
-          const response = await fetch('http://localhost:8000/api/cart/add_item/', {
+          const response = await fetch(`${apiUrl}/cart/add_item/`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -114,7 +115,7 @@ const CheckoutPage = () => {
       let shippingAddressId, billingAddressId;
 
       // First, try to get the user's addresses
-      const addressResponse = await fetch('http://localhost:8000/api/addresses/', {
+      const addressResponse = await fetch(`${apiUrl}/addresses/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -148,7 +149,7 @@ const CheckoutPage = () => {
           default: true
         };
 
-        const createShippingResponse = await fetch('http://localhost:8000/api/addresses/', {
+        const createShippingResponse = await fetch(`${apiUrl}/addresses/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -171,7 +172,7 @@ const CheckoutPage = () => {
       }
 
       // Use the create_from_cart endpoint with the correct URL
-      const createOrderResponse = await fetch('http://localhost:8000/api/orders/create_from_cart/', {
+      const createOrderResponse = await fetch(`${apiUrl}/orders/create_from_cart/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -192,7 +193,7 @@ const CheckoutPage = () => {
       setOrderId(orderData.id);
 
       // Clear the cart
-      await fetch('http://localhost:8000/api/cart/clear/', {
+      await fetch(`${apiUrl}/cart/clear/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

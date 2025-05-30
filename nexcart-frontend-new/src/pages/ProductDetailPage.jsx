@@ -111,7 +111,8 @@ const ProductDetailPage = () => {
           'X-Requested-With': 'XMLHttpRequest'
         };
 
-        const response = await fetch(`http://localhost:8000/api/products/?category=${categoryId}`, { headers });
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const response = await fetch(`${apiUrl}/products/?category=${categoryId}`, { headers });
         if (!response.ok) {
           throw new Error('Failed to fetch related products');
         }
@@ -128,7 +129,7 @@ const ProductDetailPage = () => {
             if (!product.primary_image) {
               try {
                 // Fetch product details to get images
-                const detailResponse = await fetch(`http://localhost:8000/api/products/${product.id}/`, { headers });
+                const detailResponse = await fetch(`${apiUrl}/products/${product.id}/`, { headers });
                 if (detailResponse.ok) {
                   const detailData = await detailResponse.json();
 
