@@ -60,7 +60,7 @@ const LoginPage = () => {
       localStorage.setItem('isLoggedIn', 'true');
 
       // Get user info
-      const userResponse = await fetch('http://localhost:8000/api/users/me/', {
+      const userResponse = await fetch(`${apiUrl}/users/me/`, {
         headers: {
           'Authorization': `Bearer ${data.access}`,
         },

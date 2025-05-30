@@ -70,7 +70,8 @@ const ProfilePage = () => {
         }
 
         // Fetch user data from API
-        const response = await fetch('http://localhost:8000/api/users/me/', {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const response = await fetch(`${apiUrl}/users/me/`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -161,7 +162,8 @@ const ProfilePage = () => {
       }
 
       // Update user profile
-      const userResponse = await fetch(`http://localhost:8000/api/users/${userData.id}/`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const userResponse = await fetch(`${apiUrl}/users/${userData.id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -182,10 +184,10 @@ const ProfilePage = () => {
       // Check if user has an address
       let addressId = null;
       let addressMethod = 'POST';
-      let addressUrl = 'http://localhost:8000/api/addresses/';
+      let addressUrl = `${apiUrl}/addresses/`;
 
       // Get updated user data to check for addresses
-      const userDataResponse = await fetch('http://localhost:8000/api/users/me/', {
+      const userDataResponse = await fetch(`${apiUrl}/users/me/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -201,7 +203,7 @@ const ProfilePage = () => {
         // Update existing address
         addressId = currentUserData.addresses[0].id;
         addressMethod = 'PUT';
-        addressUrl = `http://localhost:8000/api/addresses/${addressId}/`;
+        addressUrl = `${apiUrl}/addresses/${addressId}/`;
       }
 
       // Update or create address
@@ -228,7 +230,7 @@ const ProfilePage = () => {
       }
 
       // Refresh user data
-      const updatedUserResponse = await fetch('http://localhost:8000/api/users/me/', {
+      const updatedUserResponse = await fetch(`${apiUrl}/users/me/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -297,7 +299,8 @@ const ProfilePage = () => {
       }
 
       // Change password
-      const response = await fetch(`http://localhost:8000/api/users/${userData.id}/change_password/`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${apiUrl}/users/${userData.id}/change_password/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -361,7 +364,8 @@ const ProfilePage = () => {
         formData.append('avatar', info.file.originFileObj);
 
         // Upload avatar
-        const response = await fetch(`http://localhost:8000/api/users/${userData.id}/upload_avatar/`, {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const response = await fetch(`${apiUrl}/users/${userData.id}/upload_avatar/`, {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`,

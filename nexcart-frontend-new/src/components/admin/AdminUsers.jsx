@@ -49,8 +49,9 @@ const AdminUsers = () => {
       setLoading(true);
       try {
         const token = localStorage.getItem('access_token');
-        
-        const response = await fetch('http://localhost:8000/api/admin/users/', {
+
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const response = await fetch(`${apiUrl}/admin/users/`, {
           headers: {
             'Authorization': `Bearer ${token}`
           }
@@ -77,10 +78,10 @@ const AdminUsers = () => {
   const showUserDetails = async (user) => {
     setSelectedUser(user);
     setDrawerVisible(true);
-    
+
     try {
       const token = localStorage.getItem('access_token');
-      
+
       const response = await fetch(`http://localhost:8000/api/admin/users/${user.id}/orders/`, {
         headers: {
           'Authorization': `Bearer ${token}`
@@ -125,8 +126,9 @@ const AdminUsers = () => {
   const handleUpdateUser = async (values) => {
     try {
       const token = localStorage.getItem('access_token');
-      
-      const response = await fetch(`http://localhost:8000/api/admin/users/${selectedUser.id}/`, {
+
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${apiUrl}/admin/users/${selectedUser.id}/`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -141,13 +143,13 @@ const AdminUsers = () => {
 
       message.success('User updated successfully');
       setModalVisible(false);
-      
+
       // Update user in the list
       const updatedUser = await response.json();
-      setUsers(users.map(user => 
+      setUsers(users.map(user =>
         user.id === selectedUser.id ? updatedUser : user
       ));
-      
+
       // Update selected user if drawer is open
       if (drawerVisible) {
         setSelectedUser(updatedUser);
@@ -162,7 +164,7 @@ const AdminUsers = () => {
   const handleChangePassword = async (values) => {
     try {
       const token = localStorage.getItem('access_token');
-      
+
       const response = await fetch(`http://localhost:8000/api/admin/users/${selectedUser.id}/change_password/`, {
         method: 'POST',
         headers: {
@@ -190,7 +192,7 @@ const AdminUsers = () => {
   const handleDeleteUser = async (userId) => {
     try {
       const token = localStorage.getItem('access_token');
-      
+
       const response = await fetch(`http://localhost:8000/api/admin/users/${userId}/`, {
         method: 'DELETE',
         headers: {
@@ -203,10 +205,10 @@ const AdminUsers = () => {
       }
 
       message.success('User deleted successfully');
-      
+
       // Update user list
       setUsers(users.filter(user => user.id !== userId));
-      
+
       // Close drawer if open
       if (drawerVisible && selectedUser && selectedUser.id === userId) {
         setDrawerVisible(false);
@@ -287,21 +289,21 @@ const AdminUsers = () => {
       key: 'actions',
       render: (_, record) => (
         <Space size="small">
-          <Button 
-            type="primary" 
-            icon={<EyeOutlined />} 
+          <Button
+            type="primary"
+            icon={<EyeOutlined />}
             onClick={() => showUserDetails(record)}
             size="small"
           />
-          <Button 
-            type="default" 
-            icon={<EditOutlined />} 
+          <Button
+            type="default"
+            icon={<EditOutlined />}
             onClick={() => showEditModal(record)}
             size="small"
           />
-          <Button 
-            type="default" 
-            icon={<LockOutlined />} 
+          <Button
+            type="default"
+            icon={<LockOutlined />}
             onClick={() => showPasswordModal(record)}
             size="small"
           />
@@ -311,10 +313,10 @@ const AdminUsers = () => {
             okText="Yes"
             cancelText="No"
           >
-            <Button 
-              type="primary" 
-              danger 
-              icon={<DeleteOutlined />} 
+            <Button
+              type="primary"
+              danger
+              icon={<DeleteOutlined />}
               size="small"
               disabled={record.is_superuser} // Prevent deleting superusers
             />
@@ -347,7 +349,7 @@ const AdminUsers = () => {
         if (status === 'shipped') color = 'cyan';
         if (status === 'delivered') color = 'green';
         if (status === 'cancelled') color = 'red';
-        
+
         return <Tag color={color}>{status.toUpperCase()}</Tag>;
       },
     },
@@ -371,9 +373,9 @@ const AdminUsers = () => {
     <div>
       <Title level={2}>Users</Title>
 
-      <Table 
-        columns={columns} 
-        dataSource={users} 
+      <Table
+        columns={columns}
+        dataSource={users}
         rowKey="id"
         pagination={{ pageSize: 10 }}
       />
@@ -525,8 +527,8 @@ const AdminUsers = () => {
         open={drawerVisible}
         extra={
           <Space>
-            <Button 
-              type="primary" 
+            <Button
+              type="primary"
               onClick={() => {
                 setDrawerVisible(false);
                 showEditModal(selectedUser);
@@ -564,9 +566,9 @@ const AdminUsers = () => {
               </Descriptions>
             </TabPane>
             <TabPane tab="Orders" key="2">
-              <Table 
-                columns={orderColumns} 
-                dataSource={userOrders} 
+              <Table
+                columns={orderColumns}
+                dataSource={userOrders}
                 rowKey="id"
                 pagination={{ pageSize: 5 }}
               />

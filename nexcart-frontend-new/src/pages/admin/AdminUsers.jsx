@@ -53,7 +53,8 @@ const AdminUsers = () => {
           throw new Error('No authentication token found');
         }
 
-        const response = await fetch('http://localhost:8000/api/users/', {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const response = await fetch(`${apiUrl}/users/`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -100,13 +101,14 @@ const AdminUsers = () => {
   const handleUpdateUser = async () => {
     try {
       const values = await form.validateFields();
-      
+
       const token = localStorage.getItem('access_token');
       if (!token) {
         throw new Error('No authentication token found');
       }
 
-      const response = await fetch(`http://localhost:8000/api/users/${editingUser.id}/`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${apiUrl}/users/${editingUser.id}/`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -121,10 +123,10 @@ const AdminUsers = () => {
 
       message.success('User updated successfully');
       setModalVisible(false);
-      
+
       // Update user in state
       const updatedUser = await response.json();
-      setUsers(users.map(user => 
+      setUsers(users.map(user =>
         user.id === updatedUser.id ? updatedUser : user
       ));
 
@@ -290,9 +292,9 @@ const AdminUsers = () => {
           <Tabs defaultActiveKey="1">
             <TabPane tab="Profile" key="1">
               <div style={{ textAlign: 'center', marginBottom: 24 }}>
-                <Avatar 
-                  size={100} 
-                  icon={<UserOutlined />} 
+                <Avatar
+                  size={100}
+                  icon={<UserOutlined />}
                   src={selectedUser.avatar_url}
                 />
                 <Title level={4} style={{ marginTop: 16, marginBottom: 0 }}>

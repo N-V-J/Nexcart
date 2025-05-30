@@ -13,7 +13,8 @@ const AdminLoginPage = () => {
     setLoading(true);
     try {
       // Make API call to the Django backend
-      const response = await fetch('http://localhost:8000/api/token/', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${apiUrl}/token/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -36,7 +37,7 @@ const AdminLoginPage = () => {
       localStorage.setItem('isLoggedIn', 'true');
 
       // Get user info to check if superuser
-      const userResponse = await fetch('http://localhost:8000/api/users/me/', {
+      const userResponse = await fetch(`${apiUrl}/users/me/`, {
         headers: {
           'Authorization': `Bearer ${data.access}`,
         },
@@ -47,7 +48,7 @@ const AdminLoginPage = () => {
       }
 
       const userData = await userResponse.json();
-      
+
       // Check if user is a superuser or staff
       if (!userData.is_superuser && !userData.is_staff) {
         localStorage.removeItem('access_token');
@@ -71,16 +72,16 @@ const AdminLoginPage = () => {
   };
 
   return (
-    <div style={{ 
-      display: 'flex', 
-      justifyContent: 'center', 
-      alignItems: 'center', 
+    <div style={{
+      display: 'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
       minHeight: '100vh',
       background: '#f0f2f5'
     }}>
-      <Card 
-        style={{ 
-          width: 400, 
+      <Card
+        style={{
+          width: 400,
           boxShadow: '0 4px 8px rgba(0,0,0,0.1)',
           borderRadius: '8px'
         }}
@@ -103,9 +104,9 @@ const AdminLoginPage = () => {
             name="username"
             rules={[{ required: true, message: 'Please input your Username!' }]}
           >
-            <Input 
-              prefix={<UserOutlined />} 
-              placeholder="Username" 
+            <Input
+              prefix={<UserOutlined />}
+              placeholder="Username"
               size="large"
             />
           </Form.Item>
@@ -122,9 +123,9 @@ const AdminLoginPage = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button 
-              type="primary" 
-              htmlType="submit" 
+            <Button
+              type="primary"
+              htmlType="submit"
               style={{ width: '100%', height: '40px' }}
               disabled={loading}
             >
