@@ -23,7 +23,8 @@ const RegisterPage = () => {
         phone_number: values.phone
       });
 
-      const response = await fetch('http://localhost:8000/api/users/', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${apiUrl}/users/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

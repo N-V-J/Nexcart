@@ -13,7 +13,8 @@ const LoginPage = () => {
     setLoading(true);
     try {
       // Make a real API call to the Django backend
-      const response = await fetch('http://localhost:8000/api/token/', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${apiUrl}/token/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
