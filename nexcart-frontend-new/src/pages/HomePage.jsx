@@ -32,6 +32,7 @@ import {
 } from '@ant-design/icons';
 import { useCart } from '../context/CartContext';
 import { handleImageError } from '../utils/imageUtils';
+import { API_URL } from '../config/api';
 
 const { Title, Paragraph, Text } = Typography;
 const { Meta } = Card;
@@ -54,19 +55,23 @@ const HomePage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
-        const response = await fetch(`${apiUrl}/categories/`);
+        const response = await fetch(`${API_URL}/categories/`);
+        console.log('HomePage Categories API URL:', `${API_URL}/categories/`);
         if (!response.ok) {
           throw new Error('Failed to fetch categories');
         }
         const data = await response.json();
+        console.log('HomePage Categories data:', data);
 
         // Check if data is an array or has a results property
         if (Array.isArray(data)) {
+          console.log('Setting categories from array:', data);
           setCategories(data);
         } else if (data.results && Array.isArray(data.results)) {
+          console.log('Setting categories from results:', data.results);
           setCategories(data.results);
         } else {
+          console.log('No categories found, setting empty array');
           setCategories([]);
         }
       } catch (error) {
@@ -83,8 +88,8 @@ const HomePage = () => {
     const fetchProducts = async () => {
       try {
         // Fetch all products
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
-        const response = await fetch(`${apiUrl}/products/?no_pagination=true`);
+        const response = await fetch(`${API_URL}/products/?no_pagination=true`);
+        console.log('HomePage Products API URL:', `${API_URL}/products/?no_pagination=true`);
         if (!response.ok) {
           throw new Error('Failed to fetch products');
         }

@@ -8,6 +8,7 @@ import {
   HomeOutlined,
   SkinOutlined
 } from '@ant-design/icons';
+import { API_URL } from '../../config/api';
 
 const { Sider } = Layout;
 const { Title } = Typography;
@@ -17,18 +18,64 @@ const Sidebar = () => {
   const [loading, setLoading] = useState(true);
   const location = useLocation();
 
-  // Mock categories - in a real app, these would be fetched from an API
+  // Get category icon based on name
+  const getCategoryIcon = (name) => {
+    const icons = {
+      'Electronics': <LaptopOutlined />,
+      'Clothing': <SkinOutlined />,
+      'Home & Kitchen': <HomeOutlined />,
+      'Phones & Accessories': <MobileOutlined />,
+      'Sports & Outdoors': <AppstoreOutlined />,
+      'Books': <AppstoreOutlined />
+    };
+
+    return icons[name] || <AppstoreOutlined />;
+  };
+
+  // Fetch categories from API
   useEffect(() => {
-    // Simulate API call
-    setTimeout(() => {
-      setCategories([
-        { id: 1, name: 'Electronics', icon: <LaptopOutlined /> },
-        { id: 2, name: 'Clothing', icon: <SkinOutlined /> },
-        { id: 3, name: 'Home & Kitchen', icon: <HomeOutlined /> },
-        { id: 4, name: 'Phones & Accessories', icon: <MobileOutlined /> },
-      ]);
-      setLoading(false);
-    }, 500);
+    const fetchCategories = async () => {
+      try {
+        const response = await fetch(`${API_URL}/categories/`);
+        console.log('Sidebar Categories API URL:', `${API_URL}/categories/`);
+
+        if (!response.ok) {
+          throw new Error('Failed to fetch categories');
+        }
+
+        const data = await response.json();
+        console.log('Sidebar Categories data:', data);
+
+        // Check if data is an array or has a results property
+        let categoriesData = [];
+        if (Array.isArray(data)) {
+          categoriesData = data;
+        } else if (data.results && Array.isArray(data.results)) {
+          categoriesData = data.results;
+        }
+
+        // Add icons to categories
+        const categoriesWithIcons = categoriesData.map(category => ({
+          ...category,
+          icon: getCategoryIcon(category.name)
+        }));
+
+        setCategories(categoriesWithIcons);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching categories in Sidebar:', error);
+        // Fallback to mock data if API fails
+        setCategories([
+          { id: 1, name: 'Electronics', icon: <LaptopOutlined /> },
+          { id: 2, name: 'Clothing', icon: <SkinOutlined /> },
+          { id: 3, name: 'Home & Kitchen', icon: <HomeOutlined /> },
+          { id: 4, name: 'Phones & Accessories', icon: <MobileOutlined /> },
+        ]);
+        setLoading(false);
+      }
+    };
+
+    fetchCategories();
   }, []);
 
   const categoryItems = categories.map(category => ({
