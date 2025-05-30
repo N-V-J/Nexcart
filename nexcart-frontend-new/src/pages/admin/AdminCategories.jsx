@@ -228,16 +228,20 @@ const AdminCategories = () => {
       title: 'Image',
       dataIndex: 'image',
       key: 'image',
-      render: (image, record) => (
-        <Image
-          src={getValidImageUrl(image, record.name, 50, 50)}
-          alt={record.name}
-          width={50}
-          height={50}
-          style={{ objectFit: 'cover' }}
-          onError={(e) => handleImageError(e, record.name, 50, 50)}
-        />
-      ),
+      render: (image, record) => {
+        // Prioritize image_url over image field
+        const imageUrl = record.image_url || record.image;
+        return (
+          <Image
+            src={getValidImageUrl(imageUrl, record.name, 50, 50)}
+            alt={record.name}
+            width={50}
+            height={50}
+            style={{ objectFit: 'cover' }}
+            onError={(e) => handleImageError(e, record.name, 50, 50)}
+          />
+        );
+      },
     },
     {
       title: 'Name',

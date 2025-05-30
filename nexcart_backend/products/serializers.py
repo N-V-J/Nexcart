@@ -7,9 +7,19 @@ class CategorySerializer(serializers.ModelSerializer):
     """
     Serializer for the Category model
     """
+    image_url = serializers.SerializerMethodField()
+
     class Meta:
         model = Category
-        fields = ['id', 'name', 'slug', 'description', 'image', 'parent', 'is_active']
+        fields = ['id', 'name', 'slug', 'description', 'image', 'image_url', 'parent', 'is_active']
+
+    def get_image_url(self, obj):
+        if obj.image:
+            request = self.context.get('request')
+            if request:
+                return request.build_absolute_uri(obj.image.url)
+            return obj.image.url
+        return None
 
 class ProductSerializer(serializers.ModelSerializer):
     """

@@ -90,8 +90,10 @@ export const getValidImageUrl = (imageUrl, productName, width = 200, height = 20
 
   // Check if the URL is relative (doesn't start with http)
   if (imageUrl && !imageUrl.startsWith('http') && !imageUrl.startsWith('data:')) {
+    // Get the backend URL from environment variables
+    const backendUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000';
     // Assume it's a relative URL and prepend the backend URL
-    const fullUrl = `http://localhost:8000${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
+    const fullUrl = `${backendUrl}${imageUrl.startsWith('/') ? '' : '/'}${imageUrl}`;
     console.log('Converting relative URL to absolute:', fullUrl);
     return fullUrl;
   }
