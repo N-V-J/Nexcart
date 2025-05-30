@@ -30,6 +30,10 @@ RUN mkdir -p media
 # Collect static files
 RUN python manage.py collectstatic --noinput
 
+# Create startup script
+COPY start.sh .
+RUN chmod +x start.sh
+
 # Create a non-root user
 RUN adduser --disabled-password --gecos '' appuser
 RUN chown -R appuser:appuser /app
@@ -39,4 +43,4 @@ USER appuser
 EXPOSE 8000
 
 # Run the application
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "nexcart_backend.wsgi:application"]
+CMD ["./start.sh"]
