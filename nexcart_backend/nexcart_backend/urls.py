@@ -27,15 +27,36 @@ def api_root(request):
     return JsonResponse({
         'message': 'NexCart Backend API',
         'version': '1.0.0',
+        'status': 'running',
         'endpoints': {
             'admin': '/admin/',
             'api': '/api/',
             'auth': '/api/token/',
+            'health': '/health/',
         }
+    })
+
+def health_check(request):
+    """Health check endpoint"""
+    try:
+        from django.db import connection
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT 1")
+        db_status = "connected"
+    except Exception as e:
+        db_status = f"error: {str(e)}"
+
+    return JsonResponse({
+        'status': 'ok',
+        'database': db_status,
+        'debug': settings.DEBUG,
+        'static_url': settings.STATIC_URL,
+        'static_root': settings.STATIC_ROOT,
     })
 
 urlpatterns = [
     path('', api_root, name='api_root'),  # Root URL
+    path('health/', health_check, name='health_check'),  # Health check
     path('admin/', admin.site.urls),
     path('api/', include('api.urls')),
     path('api/token/', CustomTokenObtainPairView.as_view(), name='token_obtain_pair'),

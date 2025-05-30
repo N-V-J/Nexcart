@@ -237,23 +237,21 @@ AUTH_USER_MODEL = 'users.User'
 
 # Render.com specific settings
 if os.environ.get('RENDER'):
+    # Enable debug temporarily to see the actual error
+    DEBUG = True  # Temporarily enable for debugging
+
     # Security settings for production
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     X_FRAME_OPTIONS = 'DENY'
 
-    # Static files settings for Render with WhiteNoise
-    STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
-
-    # Ensure static files are served correctly
+    # Static files settings for Render - Use simplest approach
     STATIC_URL = '/static/'
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-    # WhiteNoise configuration for Render
+    # Disable WhiteNoise compression temporarily
     WHITENOISE_USE_FINDERS = True
     WHITENOISE_AUTOREFRESH = True
-    WHITENOISE_SKIP_COMPRESS_EXTENSIONS = ['jpg', 'jpeg', 'png', 'gif', 'webp', 'zip', 'gz', 'tgz', 'bz2', 'tbz', 'xz', 'br']
-    WHITENOISE_MAX_AGE = 31536000  # 1 year
 
     # Logging configuration
     LOGGING = {
