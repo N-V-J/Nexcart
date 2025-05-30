@@ -7,6 +7,7 @@ import {
   CreditCardOutlined,
   ArrowUpOutlined,
   ArrowDownOutlined,
+  AppstoreOutlined,
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 
@@ -20,8 +21,15 @@ const AdminDashboard = () => {
     totalUsers: 0,
     totalOrders: 0,
     totalRevenue: 0,
+    totalCategories: 0,
+    activeProducts: 0,
+    pendingOrders: 0,
+    completedOrders: 0,
   });
   const [recentOrders, setRecentOrders] = useState([]);
+  const [recentUsers, setRecentUsers] = useState([]);
+  const [topProducts, setTopProducts] = useState([]);
+  const [systemInfo, setSystemInfo] = useState({});
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,21 +42,22 @@ const AdminDashboard = () => {
         }
 
         // Fetch products count
-        const productsResponse = await fetch('http://localhost:8000/api/products/', {
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const productsResponse = await fetch(`${apiUrl}/products/`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         });
 
         // Fetch users count
-        const usersResponse = await fetch('http://localhost:8000/api/users/', {
+        const usersResponse = await fetch(`${apiUrl}/users/`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
         });
 
         // Fetch orders
-        const ordersResponse = await fetch('http://localhost:8000/api/orders/', {
+        const ordersResponse = await fetch(`${apiUrl}/orders/`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -70,11 +79,31 @@ const AdminDashboard = () => {
           0
         );
 
+        // Fetch categories for additional stats
+        const categoriesResponse = await fetch(`${apiUrl}/categories/`, {
+          headers: {
+            'Authorization': `Bearer ${token}`,
+          },
+        });
+        const categoriesData = categoriesResponse.ok ? await categoriesResponse.json() : { count: 0, results: [] };
+
+        // Calculate additional stats
+        const activeProducts = productsData.results ?
+          productsData.results.filter(product => product.is_active).length : 0;
+        const pendingOrders = ordersData.results ?
+          ordersData.results.filter(order => order.status === 'pending').length : 0;
+        const completedOrders = ordersData.results ?
+          ordersData.results.filter(order => order.status === 'completed').length : 0;
+
         setStats({
-          totalProducts: productsData.count,
-          totalUsers: usersData.count,
-          totalOrders: ordersData.count,
+          totalProducts: productsData.count || 0,
+          totalUsers: usersData.count || 0,
+          totalOrders: ordersData.count || 0,
           totalRevenue: totalRevenue,
+          totalCategories: categoriesData.count || 0,
+          activeProducts: activeProducts,
+          pendingOrders: pendingOrders,
+          completedOrders: completedOrders,
         });
 
         // Get recent orders (last 5)
@@ -86,7 +115,7 @@ const AdminDashboard = () => {
           recentOrdersData.map(async (order) => {
             if (!order.user && order.user_id) {
               try {
-                const userResponse = await fetch(`http://localhost:8000/api/users/${order.user_id}/`, {
+                const userResponse = await fetch(`${apiUrl}/users/${order.user_id}/`, {
                   headers: {
                     'Authorization': `Bearer ${token}`,
                   },
@@ -187,6 +216,7 @@ const AdminDashboard = () => {
     <div>
       <Title level={2}>Dashboard</Title>
 
+      {/* Main Statistics */}
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={12} lg={6}>
           <Card>
@@ -229,6 +259,50 @@ const AdminDashboard = () => {
                 <span>₹</span>
               </>}
               valueStyle={{ color: '#cf1322' }}
+            />
+          </Card>
+        </Col>
+      </Row>
+
+      {/* Additional Statistics */}
+      <Row gutter={[16, 16]} style={{ marginTop: 16 }}>
+        <Col xs={24} sm={12} lg={6}>
+          <Card>
+            <Statistic
+              title="Categories"
+              value={stats.totalCategories}
+              prefix={<AppstoreOutlined />}
+              valueStyle={{ color: '#fa8c16' }}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} lg={6}>
+          <Card>
+            <Statistic
+              title="Active Products"
+              value={stats.activeProducts}
+              prefix={<ShoppingOutlined />}
+              valueStyle={{ color: '#52c41a' }}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} lg={6}>
+          <Card>
+            <Statistic
+              title="Pending Orders"
+              value={stats.pendingOrders}
+              prefix={<ShoppingCartOutlined />}
+              valueStyle={{ color: '#faad14' }}
+            />
+          </Card>
+        </Col>
+        <Col xs={24} sm={12} lg={6}>
+          <Card>
+            <Statistic
+              title="Completed Orders"
+              value={stats.completedOrders}
+              prefix={<ShoppingCartOutlined />}
+              valueStyle={{ color: '#52c41a' }}
             />
           </Card>
         </Col>
