@@ -10,6 +10,7 @@ class Category(models.Model):
     description = models.TextField(blank=True, null=True)
     image = models.ImageField(upload_to='categories/', blank=True, null=True)
     parent = models.ForeignKey('self', on_delete=models.CASCADE, blank=True, null=True, related_name='children')
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         verbose_name_plural = 'Categories'
