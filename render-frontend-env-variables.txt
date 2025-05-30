@@ -1,0 +1,78 @@
+RENDER FRONTEND ENVIRONMENT VARIABLES
+=====================================
+
+Copy and paste these in Render Dashboard → Web Service → Environment Variables:
+
+ESSENTIAL VARIABLES (Required):
+-------------------------------
+VITE_API_URL=https://nexcart-backend.onrender.com/api
+VITE_APP_NAME=NexCart
+VITE_APP_DESCRIPTION=Modern E-Commerce Platform
+NODE_ENV=production
+
+PAYMENT CONFIGURATION (Optional):
+---------------------------------
+VITE_STRIPE_PUBLIC_KEY=pk_test_your_stripe_publishable_key_here
+
+CURRENCY SETTINGS (Optional):
+-----------------------------
+VITE_DEFAULT_CURRENCY=INR
+VITE_CURRENCY_SYMBOL=₹
+
+FEATURE FLAGS (Optional):
+------------------------
+VITE_ENABLE_CART=true
+VITE_ENABLE_WISHLIST=true
+VITE_ENABLE_REVIEWS=true
+VITE_ENABLE_NOTIFICATIONS=true
+
+BRANDING (Optional):
+-------------------
+VITE_PRIMARY_COLOR=#1890ff
+VITE_SECONDARY_COLOR=#52c41a
+
+CONTACT INFO (Optional):
+-----------------------
+VITE_SUPPORT_EMAIL=support@nexcart.com
+VITE_SUPPORT_PHONE=+91-XXXXXXXXXX
+
+SOCIAL MEDIA (Optional):
+-----------------------
+VITE_FACEBOOK_URL=https://facebook.com/nexcart
+VITE_TWITTER_URL=https://twitter.com/nexcart
+VITE_INSTAGRAM_URL=https://instagram.com/nexcart
+
+SEO (Optional):
+--------------
+VITE_META_TITLE=NexCart - Modern E-Commerce Platform
+VITE_META_DESCRIPTION=Shop the latest products with NexCart
+VITE_META_KEYWORDS=ecommerce,shopping,online store
+
+ANALYTICS (Optional):
+--------------------
+VITE_GA_TRACKING_ID=G-XXXXXXXXXX
+VITE_FB_PIXEL_ID=your_facebook_pixel_id
+
+PERFORMANCE (Optional):
+----------------------
+VITE_API_TIMEOUT=30000
+VITE_ENABLE_IMAGE_OPTIMIZATION=true
+VITE_IMAGE_QUALITY=80
+
+INSTRUCTIONS:
+============
+1. Go to Render Dashboard
+2. Select your frontend web service
+3. Go to "Environment" tab
+4. Add each variable as Key=Value pair
+5. Click "Save Changes"
+6. Service will automatically redeploy
+
+MINIMUM REQUIRED:
+================
+For basic functionality, you only need:
+- VITE_API_URL=https://nexcart-backend.onrender.com/api
+- VITE_APP_NAME=NexCart
+- NODE_ENV=production
+
+All other variables are optional and can be added later.

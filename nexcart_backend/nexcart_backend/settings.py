@@ -33,6 +33,19 @@ DEBUG = os.environ.get('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
+# Add CSRF trusted origins for Render deployment
+CSRF_TRUSTED_ORIGINS = [
+    'https://*.onrender.com',
+    'http://localhost:3000',
+    'http://localhost:5173',
+    'http://127.0.0.1:3000',
+    'http://127.0.0.1:5173',
+]
+
+# Add specific CSRF trusted origins from environment
+if os.environ.get('CSRF_TRUSTED_ORIGINS'):
+    CSRF_TRUSTED_ORIGINS.extend(os.environ.get('CSRF_TRUSTED_ORIGINS').split(','))
+
 
 # Application definition
 

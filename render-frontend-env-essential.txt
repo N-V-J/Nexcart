@@ -1,0 +1,12 @@
+VITE_API_URL=https://nexcart-backend.onrender.com/api
+VITE_APP_NAME=NexCart
+VITE_APP_DESCRIPTION=Modern E-Commerce Platform
+NODE_ENV=production
+VITE_STRIPE_PUBLIC_KEY=pk_test_your_stripe_publishable_key_here
+VITE_DEFAULT_CURRENCY=INR
+VITE_CURRENCY_SYMBOL=₹
+VITE_ENABLE_CART=true
+VITE_ENABLE_WISHLIST=true
+VITE_ENABLE_REVIEWS=true
+VITE_SUPPORT_EMAIL=support@nexcart.com
+VITE_SUPPORT_PHONE=+91-1234567890
