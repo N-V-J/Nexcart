@@ -1,0 +1,52 @@
+RENDER ENVIRONMENT VARIABLES SETUP
+===================================
+
+COPY THESE EXACT VALUES TO YOUR RENDER SERVICE:
+
+1. Go to: https://render.com
+2. Click: nexcart-backend-qv0t
+3. Click: Environment tab
+4. For each variable below, click "Add Environment Variable"
+
+VARIABLE 1:
+Key: ALLOWED_HOSTS
+Value: nexcart-backend-qv0t.onrender.com,localhost,127.0.0.1
+
+VARIABLE 2:
+Key: SECRET_KEY
+Value: zoy@ug8)=moz8t5ma38%9+8pgzi8hbc$1c738&hm0%tu!&$0t)
+
+VARIABLE 3:
+Key: DEBUG
+Value: False
+
+VARIABLE 4:
+Key: RENDER
+Value: True
+
+VARIABLE 5:
+Key: CSRF_TRUSTED_ORIGINS
+Value: https://nexcart-backend-qv0t.onrender.com
+
+VARIABLE 6:
+Key: CORS_ALLOWED_ORIGINS
+Value: https://nexcart-frontend.onrender.com,http://localhost:3000
+
+VARIABLE 7:
+Key: DJANGO_SETTINGS_MODULE
+Value: nexcart_backend.settings
+
+VARIABLE 8 (if you have database):
+Key: DATABASE_URL
+Value: your_postgresql_database_url_here
+
+AFTER ADDING ALL VARIABLES:
+1. Click "Save Changes" at bottom
+2. Wait 2-3 minutes for redeploy
+3. Test: https://nexcart-backend-qv0t.onrender.com/admin/
+
+CRITICAL NOTES:
+- NO spaces around commas in ALLOWED_HOSTS
+- Domain must be EXACTLY: nexcart-backend-qv0t.onrender.com
+- SECRET_KEY must include all special characters
+- Must click "Save Changes" after adding all variables
