@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { message } from 'antd';
+import { API_URL } from '../config/api';
 
 // Create the cart context
 const CartContext = createContext();
@@ -23,8 +24,7 @@ export const CartProvider = ({ children }) => {
 
     try {
       setLoading(true);
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
-      const response = await fetch(`${apiUrl}/cart/my_cart/`, {
+      const response = await fetch(`${API_URL}/cart/my_cart/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -154,8 +154,7 @@ export const CartProvider = ({ children }) => {
           return false;
       }
 
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
-      const response = await fetch(`${apiUrl}/cart/${endpoint}/`, {
+      const response = await fetch(`${API_URL}/cart/${endpoint}/`, {
         method,
         headers: {
           'Content-Type': 'application/json',

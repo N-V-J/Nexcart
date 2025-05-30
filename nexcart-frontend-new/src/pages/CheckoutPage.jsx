@@ -27,6 +27,7 @@ import {
   LockOutlined
 } from '@ant-design/icons';
 import { useCart } from '../context/CartContext';
+import { API_URL } from '../config/api';
 
 const { Title, Text, Paragraph } = Typography;
 const { Option } = Select;
@@ -88,10 +89,9 @@ const CheckoutPage = () => {
 
       // Sync local cart with backend cart
       // This ensures that the backend cart has the same items as the frontend cart
-      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
       for (const item of cartItems) {
         try {
-          const response = await fetch(`${apiUrl}/cart/add_item/`, {
+          const response = await fetch(`${API_URL}/cart/add_item/`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -115,7 +115,7 @@ const CheckoutPage = () => {
       let shippingAddressId, billingAddressId;
 
       // First, try to get the user's addresses
-      const addressResponse = await fetch(`${apiUrl}/addresses/`, {
+      const addressResponse = await fetch(`${API_URL}/addresses/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -149,7 +149,7 @@ const CheckoutPage = () => {
           default: true
         };
 
-        const createShippingResponse = await fetch(`${apiUrl}/addresses/`, {
+        const createShippingResponse = await fetch(`${API_URL}/addresses/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -172,7 +172,7 @@ const CheckoutPage = () => {
       }
 
       // Use the create_from_cart endpoint with the correct URL
-      const createOrderResponse = await fetch(`${apiUrl}/orders/create_from_cart/`, {
+      const createOrderResponse = await fetch(`${API_URL}/orders/create_from_cart/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -193,7 +193,7 @@ const CheckoutPage = () => {
       setOrderId(orderData.id);
 
       // Clear the cart
-      await fetch(`${apiUrl}/cart/clear/`, {
+      await fetch(`${API_URL}/cart/clear/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

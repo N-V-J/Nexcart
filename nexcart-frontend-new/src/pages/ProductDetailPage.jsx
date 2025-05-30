@@ -20,6 +20,7 @@ import {
   HomeOutlined
 } from '@ant-design/icons';
 import { useCart } from '../context/CartContext';
+import { API_URL } from '../config/api';
 
 const { Title, Text, Paragraph } = Typography;
 const { TabPane } = Tabs;
@@ -57,8 +58,7 @@ const ProductDetailPage = () => {
           'X-Requested-With': 'XMLHttpRequest'
         };
 
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
-        const response = await fetch(`${apiUrl}/products/${id}/`, { headers });
+        const response = await fetch(`${API_URL}/products/${id}/`, { headers });
         if (!response.ok) {
           throw new Error('Failed to fetch product');
         }
@@ -111,8 +111,7 @@ const ProductDetailPage = () => {
           'X-Requested-With': 'XMLHttpRequest'
         };
 
-        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
-        const response = await fetch(`${apiUrl}/products/?category=${categoryId}`, { headers });
+        const response = await fetch(`${API_URL}/products/?category=${categoryId}`, { headers });
         if (!response.ok) {
           throw new Error('Failed to fetch related products');
         }
@@ -129,7 +128,7 @@ const ProductDetailPage = () => {
             if (!product.primary_image) {
               try {
                 // Fetch product details to get images
-                const detailResponse = await fetch(`${apiUrl}/products/${product.id}/`, { headers });
+                const detailResponse = await fetch(`${API_URL}/products/${product.id}/`, { headers });
                 if (detailResponse.ok) {
                   const detailData = await detailResponse.json();
 
