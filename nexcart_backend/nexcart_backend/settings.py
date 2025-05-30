@@ -61,6 +61,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'django_filters',
+    'cloudinary_storage',
+    'cloudinary',
 
     # Local apps
     'api',
@@ -234,6 +236,25 @@ STRIPE_SECRET_KEY = os.environ.get('STRIPE_SECRET_KEY', '')
 
 # Custom User model
 AUTH_USER_MODEL = 'users.User'
+
+# Cloudinary settings
+try:
+    import cloudinary
+    import cloudinary.uploader
+    import cloudinary.api
+
+    cloudinary.config(
+        cloud_name=os.environ.get('CLOUDINARY_CLOUD_NAME', ''),
+        api_key=os.environ.get('CLOUDINARY_API_KEY', ''),
+        api_secret=os.environ.get('CLOUDINARY_API_SECRET', ''),
+        secure=True
+    )
+
+    # Use Cloudinary for media files
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+except ImportError:
+    # Fallback to local storage if cloudinary is not available
+    pass
 
 # Render.com specific settings
 if os.environ.get('RENDER'):
