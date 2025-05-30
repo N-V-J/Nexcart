@@ -110,11 +110,12 @@ const AdminCategories = () => {
         formData.append('image', fileList[0].originFileObj);
       }
 
-      let url = 'http://localhost:8000/api/admin/categories/';
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      let url = `${apiUrl}/admin/categories/`;
       let method = 'POST';
 
       if (editingCategory) {
-        url = `http://localhost:8000/api/admin/categories/${editingCategory.id}/`;
+        url = `${apiUrl}/admin/categories/${editingCategory.id}/`;
         method = 'PUT';
       }
 
@@ -134,7 +135,7 @@ const AdminCategories = () => {
       setModalVisible(false);
 
       // Refresh category list
-      const categoriesResponse = await fetch('http://localhost:8000/api/categories/', {
+      const categoriesResponse = await fetch(`${apiUrl}/categories/`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -157,7 +158,8 @@ const AdminCategories = () => {
     try {
       const token = localStorage.getItem('access_token');
 
-      const response = await fetch(`http://localhost:8000/api/admin/categories/${id}/`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${apiUrl}/admin/categories/${id}/`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

@@ -572,7 +572,8 @@ const AdminProducts = () => {
     try {
       const token = localStorage.getItem('access_token');
 
-      const response = await fetch(`http://localhost:8000/api/admin/products/${id}/`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${apiUrl}/admin/products/${id}/`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`

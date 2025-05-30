@@ -189,7 +189,8 @@ const AdminCategories = () => {
         throw new Error('No authentication token found');
       }
 
-      const response = await fetch(`http://localhost:8000/api/categories/${id}/`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${apiUrl}/categories/${id}/`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${token}`,
