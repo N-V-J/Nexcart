@@ -1,0 +1,106 @@
+.user-menu-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: none;
+}
+
+.user-menu-overlay.visible {
+  display: block;
+}
+
+.user-menu {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background-color: white;
+  box-shadow: -2px 0 8px rgba(0, 0, 0, 0.15);
+  z-index: 1001;
+  transition: right 0.3s ease;
+  overflow-y: auto;
+}
+
+.user-menu.visible {
+  right: 0;
+}
+
+.user-menu-header {
+  padding: 16px;
+  border-bottom: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.user-menu-header h3 {
+  margin: 0;
+}
+
+.user-menu-close {
+  background: none;
+  border: none;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.user-menu-profile {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.user-menu-profile .ant-avatar {
+  margin-bottom: 10px;
+}
+
+.user-menu-items {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+}
+
+.user-menu-item {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.user-menu-item:hover {
+  background-color: #f5f5f5;
+}
+
+.user-menu-item .anticon {
+  margin-right: 10px;
+  font-size: 18px;
+}
+
+.user-menu-item.danger {
+  color: #ff4d4f;
+}
+
+.user-menu-item.danger:hover {
+  background-color: #fff1f0;
+}
+
+.user-menu-divider {
+  height: 1px;
+  background-color: #f0f0f0;
+  margin: 8px 0;
+}
+
+.user-menu-section-title {
+  padding: 8px 16px;
+  font-size: 12px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
