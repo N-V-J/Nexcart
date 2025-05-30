@@ -31,6 +31,7 @@ import AdminProducts from '../components/admin/AdminProducts';
 import AdminOrders from '../components/admin/AdminOrders';
 import AdminUsers from '../components/admin/AdminUsers';
 import AdminCategories from '../components/admin/AdminCategories';
+import { API_URL } from '../config/api';
 
 const { Header, Sider, Content } = Layout;
 const { Title, Text } = Typography;
@@ -153,7 +154,7 @@ const AdminPage = () => {
           data.recentOrders.map(async (order) => {
             if (!order.user && order.user_id) {
               try {
-                const userResponse = await fetch(`http://localhost:8000/api/users/${order.user_id}/`, {
+                const userResponse = await fetch(`${API_URL}/users/${order.user_id}/`, {
                   headers: {
                     'Authorization': `Bearer ${token}`
                   },

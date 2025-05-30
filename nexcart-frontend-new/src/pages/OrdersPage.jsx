@@ -12,6 +12,7 @@ import {
   EyeOutlined
 } from '@ant-design/icons';
 import { getValidImageUrl, handleImageError } from '../utils/imageUtils';
+import { API_URL } from '../config/api';
 
 const { Title, Text } = Typography;
 
@@ -38,7 +39,7 @@ const OrdersPage = () => {
       }
 
       // Fetch orders from API
-      const response = await fetch('http://localhost:8000/api/orders/', {
+      const response = await fetch(`${API_URL}/orders/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -121,7 +122,7 @@ const OrdersPage = () => {
       }
 
       // Call API to cancel order
-      const response = await fetch(`http://localhost:8000/api/orders/${selectedOrderId}/cancel_order/`, {
+      const response = await fetch(`${API_URL}/orders/${selectedOrderId}/cancel_order/`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,

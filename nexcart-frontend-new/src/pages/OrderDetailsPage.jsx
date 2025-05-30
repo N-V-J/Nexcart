@@ -18,6 +18,7 @@ import {
   Modal
 } from 'antd';
 import { getValidImageUrl, handleImageError } from '../utils/imageUtils';
+import { API_URL } from '../config/api';
 import {
   ShoppingOutlined,
   CheckCircleOutlined,
@@ -58,7 +59,7 @@ const OrderDetailsPage = () => {
         }
 
         // Fetch order details from API
-        const response = await fetch(`http://localhost:8000/api/orders/${id}/`, {
+        const response = await fetch(`${API_URL}/orders/${id}/`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },

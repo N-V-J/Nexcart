@@ -26,6 +26,7 @@ import {
   ShoppingOutlined
 } from '@ant-design/icons';
 import { getValidImageUrl, handleImageError } from '../../utils/imageUtils';
+import { API_URL } from '../../config/api';
 
 const { Title, Text } = Typography;
 const { Option } = Select;
@@ -50,7 +51,7 @@ const AdminOrders = () => {
           throw new Error('No authentication token found');
         }
 
-        const response = await fetch('http://localhost:8000/api/orders/', {
+        const response = await fetch(`${API_URL}/orders/`, {
           headers: {
             'Authorization': `Bearer ${token}`,
           },
@@ -68,7 +69,7 @@ const AdminOrders = () => {
           data.results.map(async (order) => {
             if (!order.user && order.user_id) {
               try {
-                const userResponse = await fetch(`http://localhost:8000/api/users/${order.user_id}/`, {
+                const userResponse = await fetch(`${API_URL}/users/${order.user_id}/`, {
                   headers: {
                     'Authorization': `Bearer ${token}`,
                   },
@@ -124,7 +125,7 @@ const AdminOrders = () => {
         throw new Error('No authentication token found');
       }
 
-      const response = await fetch(`http://localhost:8000/api/orders/${editingOrder.id}/`, {
+      const response = await fetch(`${API_URL}/orders/${editingOrder.id}/`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`,
