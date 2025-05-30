@@ -3,6 +3,7 @@ import { Typography, Row, Col, Card, Button, Input, Select, Spin, Empty, message
 import { ShoppingCartOutlined, SearchOutlined, ReloadOutlined } from '@ant-design/icons';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
+import { API_URL } from '../config/api';
 
 const { Title, Text } = Typography;
 const { Meta } = Card;
@@ -51,12 +52,13 @@ const ProductListPage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/categories/');
+        const response = await fetch(`${API_URL}/categories/`);
         if (!response.ok) {
           throw new Error('Failed to fetch categories');
         }
         const data = await response.json();
         console.log('Categories API response:', data);
+        console.log('Categories API URL used:', `${API_URL}/categories/`);
 
         // Check if data is an array or has a results property
         if (Array.isArray(data)) {
@@ -141,6 +143,7 @@ const ProductListPage = () => {
         // Add category filter
         if (selectedCategory) {
           baseUrl += `category=${selectedCategory}&`;
+          console.log('Filtering by category ID:', selectedCategory);
         }
 
         // Add sorting
@@ -155,6 +158,7 @@ const ProductListPage = () => {
         };
 
         // Fetch all products (handling pagination if necessary)
+        console.log('Final products API URL:', baseUrl);
         const { products: allProducts, totalCount } = await fetchAllProducts(baseUrl, headers);
 
         console.log('All products fetched:', allProducts.length);
@@ -184,7 +188,7 @@ const ProductListPage = () => {
               if (!product.image_url) {
                 try {
                   // Fetch product details to get image
-                  const detailResponse = await fetch(`http://localhost:8000/api/products/${product.id}/`, { headers });
+                  const detailResponse = await fetch(`${API_URL}/products/${product.id}/`, { headers });
                   if (detailResponse.ok) {
                     const detailData = await detailResponse.json();
                     console.log(`Detail data for product ${product.id}:`, detailData);
