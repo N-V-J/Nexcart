@@ -23,7 +23,8 @@ export const CartProvider = ({ children }) => {
 
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8000/api/cart/my_cart/', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${apiUrl}/cart/my_cart/`, {
         headers: {
           'Authorization': `Bearer ${token}`,
         },
@@ -153,7 +154,8 @@ export const CartProvider = ({ children }) => {
           return false;
       }
 
-      const response = await fetch(`http://localhost:8000/api/cart/${endpoint}/`, {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+      const response = await fetch(`${apiUrl}/cart/${endpoint}/`, {
         method,
         headers: {
           'Content-Type': 'application/json',

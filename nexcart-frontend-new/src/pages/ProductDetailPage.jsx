@@ -57,7 +57,8 @@ const ProductDetailPage = () => {
           'X-Requested-With': 'XMLHttpRequest'
         };
 
-        const response = await fetch(`http://localhost:8000/api/products/${id}/`, { headers });
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const response = await fetch(`${apiUrl}/products/${id}/`, { headers });
         if (!response.ok) {
           throw new Error('Failed to fetch product');
         }
@@ -72,7 +73,8 @@ const ProductDetailPage = () => {
         if (!data.image_url) {
           // If we have an image field but no image_url, construct it
           if (data.image && !data.image.startsWith('http')) {
-            data.image_url = `http://localhost:8000${data.image}`;
+            const baseUrl = import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:8000';
+            data.image_url = `${baseUrl}${data.image}`;
           }
           // Add placeholder image if needed
           else {

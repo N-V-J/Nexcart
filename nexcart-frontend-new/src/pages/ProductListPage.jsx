@@ -121,7 +121,8 @@ const ProductListPage = () => {
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        let baseUrl = 'http://localhost:8000/api/products/?';
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        let baseUrl = `${apiUrl}/products/?`;
 
         // Add page_size parameter to get all products (set to a very large number)
         baseUrl += `page_size=100&`;

@@ -54,7 +54,8 @@ const HomePage = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await fetch('http://localhost:8000/api/categories/');
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const response = await fetch(`${apiUrl}/categories/`);
         if (!response.ok) {
           throw new Error('Failed to fetch categories');
         }
@@ -82,7 +83,8 @@ const HomePage = () => {
     const fetchProducts = async () => {
       try {
         // Fetch all products
-        const response = await fetch('http://localhost:8000/api/products/?no_pagination=true');
+        const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+        const response = await fetch(`${apiUrl}/products/?no_pagination=true`);
         if (!response.ok) {
           throw new Error('Failed to fetch products');
         }
