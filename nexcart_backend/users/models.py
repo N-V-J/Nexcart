@@ -1,7 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.translation import gettext_lazy as _
-from cloudinary.models import CloudinaryField
 
 class User(AbstractUser):
     """
@@ -9,7 +8,7 @@ class User(AbstractUser):
     """
     email = models.EmailField(_('email address'), unique=True)
     phone_number = models.CharField(max_length=15, blank=True, null=True)
-    avatar = CloudinaryField('image', blank=True, null=True, folder='nexcart/avatars')
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
 
     USERNAME_FIELD = 'username'
     REQUIRED_FIELDS = ['email']
