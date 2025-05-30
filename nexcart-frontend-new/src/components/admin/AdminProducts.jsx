@@ -372,7 +372,8 @@ const AdminProducts = () => {
             console.log(pair[0], pair[1]);
           }
 
-          const imageUrl = `http://localhost:8000/api/admin/products/${productResponse.id}/upload_image/`;
+          const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
+          const imageUrl = `${apiUrl}/admin/products/${productResponse.id}/upload_image/`;
           console.log('Sending image to:', imageUrl);
 
           const imageResponse = await fetch(imageUrl, {
