@@ -1,3 +1,7 @@
+## 📸 Screenrecord
+
+https://github.com/user-attachments/assets/41b2e8c6-38c7-42cd-99ca-602eabe4ba6c
+
 # NexCart E-Commerce Platform
 
 NexCart is a full-featured e-commerce platform built with modern web technologies. It provides a seamless shopping experience with features like product browsing, cart management, secure checkout, user authentication, and an admin dashboard for store management.
@@ -252,8 +256,4 @@ NexCart implements several security features to protect user data and ensure sec
 - Rate limiting to prevent abuse
 - Proper error handling without exposing sensitive information
 - Secure HTTP headers
-
-## 📸 Screenshots
-
-https://github.com/user-attachments/assets/41b2e8c6-38c7-42cd-99ca-602eabe4ba6c
 
