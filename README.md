@@ -247,7 +247,6 @@ NexCart implements several security features to protect user data and ensure sec
 - HTTPS support for encrypted data transmission
 - CSRF protection
 - Input validation and sanitization
-- Secure handling of payment information via Stripe
 
 ### API Security
 - Rate limiting to prevent abuse
@@ -256,12 +255,5 @@ NexCart implements several security features to protect user data and ensure sec
 
 ## 📸 Screenshots
 
-(Include screenshots of key pages here)
+https://github.com/user-attachments/assets/41b2e8c6-38c7-42cd-99ca-602eabe4ba6c
 
-## 🤝 Contributing
-
-Contributions are welcome! Please feel free to submit a Pull Request.
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
